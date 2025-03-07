@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "env": {
+    "DISCORD_WEBHOOK_URL": "https://discord.com/api/webhooks/1347366530601586789/6NtXBL4kH8O-aSSr9GdRPZstgweGkvSbHzvKRYq5mmos_CXWhcvNRwfwYKkABg40bf9A"
+  },
   "builds": [
     {
       "src": "package.json",
@@ -8,12 +11,8 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "src": "/api/obfuscate",
+      "dest": "/api/obfuscate.js"
     }
   ]
 }
