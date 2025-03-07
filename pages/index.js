@@ -1,5 +1,6 @@
+// pages/index.js
 import { useState } from 'react';
-import styles from './Home.module.css'; // Import the CSS module for styling
+import styles from '../styles/Home.module.css'; // Make sure the correct path is used
 
 export default function Home() {
   const [file, setFile] = useState(null);
