@@ -1,0 +1,31 @@
+{
+  "name": "lua-script-obfuscator",
+  "version": "1.0.0",
+  "description": "A web app to obfuscate Lua scripts for Roblox.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^13.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^13.0.0"
+  },
+  "engines": {
+    "node": ">=16.x"
+  },
+  "keywords": [
+    "Roblox",
+    "Lua",
+    "obfuscation",
+    "Next.js"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
