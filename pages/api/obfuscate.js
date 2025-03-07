@@ -1,58 +1,39 @@
+// pages/api/obfuscate.js
 import fs from 'fs';
-import FormData from 'form-data';
-import fetch from 'node-fetch';
+import path from 'path';
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      const file = req.body; // You would need to parse the file properly, depending on your file upload method.
+      // Handle the Lua file
+      const file = req.body.file;
+      const filePath = path.join(process.cwd(), 'uploads', file.name);
+      
+      // Save the uploaded file (or process as needed)
+      fs.writeFileSync(filePath, file.data);
 
-      // Send the Lua script to Discord Webhook for malicious code detection
-      const webhookURL = 'YOUR_DISCORD_WEBHOOK_URL';  // Replace with your Discord webhook URL
+      // Perform obfuscation here
+      const obfuscatedScript = obfuscateLua(filePath);
 
-      // Prepare the message content
-      const message = {
-        content: `New Lua Script Uploaded for Inspection:`,
-        embeds: [
-          {
-            title: 'Lua Script Upload',
-            description: `The following Lua script was uploaded and is being inspected for malicious content.`,
-            fields: [
-              {
-                name: 'Script',
-                value: `\`\`\`lua\n${file}\n\`\`\``,  // Add the Lua script as a code block
-              }
-            ]
-          }
-        ]
-      };
+      // Optionally send a webhook to Discord (or any other service)
+      sendDiscordWebhook(obfuscatedScript);
 
-      // Send the data to the webhook
-      const discordResponse = await fetch(webhookURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(message)
-      });
-
-      // Check if the Discord webhook sent successfully
-      if (discordResponse.ok) {
-        // After sending to Discord, perform further checks, or directly obfuscate the Lua script
-        const obfuscatedCode = obfuscateLua(file);
-        
-        // Return success with obfuscated code
-        res.status(200).json({ success: true, obfuscatedCode });
-      } else {
-        res.status(500).json({ success: false, message: 'Failed to send webhook notification.' });
-      }
+      // Respond to the frontend
+      res.status(200).json({ success: true });
     } catch (error) {
-      res.status(500).json({ success: false, message: 'Server error' });
+      res.status(500).json({ success: false, message: 'Error processing file' });
     }
   } else {
     res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
 }
 
-function obfuscateLua(script) {
-  // Basic Lua obfuscation logic
-  return script.split('').reverse().join('');  // Example: Reverse the script as a simple obfuscation
+function obfuscateLua(filePath) {
+  // Implement the Lua script obfuscation logic here
+  return fs.readFileSync(filePath, 'utf8'); // For now, returning original script as is
+}
+
+function sendDiscordWebhook(script) {
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  // Use fetch or another method to send a webhook with the script content
 }
